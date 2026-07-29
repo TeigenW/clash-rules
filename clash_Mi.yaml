@@ -483,8 +483,9 @@ proxy-groups:
     timeout: 3000
 
 # >>>>>>>>>>>>>> 规则集定义 (重新设计正确的锚点格式) <<<<<<<<<<<<<<
-rule-providers:
-  # 锚点 1：专门解析 Loyalsoldier 的 .txt 纯文本域名规则集 (用 text 格式解析)
+# 锚点
+rule-anchor:
+   # 锚点 1：专门解析 Loyalsoldier 的 .txt 纯文本域名规则集 (用 text 格式解析)
   txt-domain: &txt-domain { type: http, interval: 86400, behavior: domain, format: text }
 
   # 锚点 2：专门解析 Loyalsoldier 的 .txt 纯文本 IP段规则集 (用 text 格式解析)
@@ -493,6 +494,8 @@ rule-providers:
   # 锚点 3：专门解析 Blackmatrix7 以及自建的 .yaml 混合规则集 (用 yaml 格式解析)
   yaml-classical: &yaml-classical { type: http, interval: 86400, behavior: classical, format: yaml }
 
+rule-providers:
+ 
   reject:
     <<: *txt-domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
