@@ -482,309 +482,235 @@ proxy-groups:
     tolerance: 50
     timeout: 3000
 
-# >>>>>>>>>>>>>> 规则集定义 (路径增加双引号) <<<<<<<<<<<<<<
+# >>>>>>>>>>>>>> 规则集定义 (路径增加双引号，添加锚点模板) <<<<<<<<<<<<<<
 rule-providers:
-  reject: # 🚫 广告拦截与隐私追踪屏蔽
-    type: "http"
-    behavior: "domain"
+  # IP-CIDR 规则模板 (二进制格式)
+  ip: &ip { type: http, interval: 86400, behavior: ipcidr, format: mrs }
+  # Domain 规则模板 (二进制格式)
+  domain: &domain { type: http, interval: 86400, behavior: domain, format: mrs }
+  # Classical 规则模板 (文本格式)
+  classical:
+    &classical {
+      type: http,
+      interval: 86400,
+      behavior: classical,
+      format: text,
+    }
+
+  reject:
+    <<: *domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
     path: "./ruleset/reject.yaml"
-    interval: 86400
 
-  emby: # 🎬 Emby 自建/公共多媒体私人影视服
-    type: "http"
-    behavior: "classical"
+  emby:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Emby/Emby.yaml"
     path: "./ruleset/emby.yaml"
-    interval: 86400
 
-  private: # 🏠 局域网本地、私有 IP 及路由器网关绕过
-    type: "http"
-    behavior: "domain"
+  private:
+    <<: *domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt"
     path: "./ruleset/private.yaml"
-    interval: 86400
 
-  github: # 🥷 GitHub 代码托管、仓库依赖与静态资源库
-    type: "http"
-    behavior: "classical"
+  github:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml"
     path: "./ruleset/github.yaml"
-    interval: 86400
 
-  openai: # 💬 ChatGPT / OpenAI 官方智能助手
-    type: "http"
-    behavior: "classical"
+  openai:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
     path: "./ruleset/openai.yaml"
-    interval: 86400
 
-  gemini: # ❇️ Google Gemini 谷歌官方智能助手
-    type: "http"
-    behavior: "classical"
+  gemini:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml"
     path: "./ruleset/gemini.yaml"
-    interval: 86400
 
-  claude: # 💬 Anthropic Claude 智能助手
-    type: "http"
-    behavior: "classical"
+  claude:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.yaml"
     path: "./ruleset/claude.yaml"
-    interval: 86400
 
-  copilot: # Ⓜ️ 微软 Copilot 智能助手
-    type: "http"
-    behavior: "classical"
+  copilot:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.yaml"
     path: "./ruleset/copilot.yaml"
-    interval: 86400
 
-  grok: # 🤖 Grok 智能助手
-    type: "http"
-    behavior: "classical"
+  grok:
+    <<: *classical
     url: "https://raw.githubusercontent.com/TeigenW/clash-rules/refs/heads/main/grok.yaml"
     path: "./ruleset/grok.yaml"
-    interval: 86400
 
-  crypto: # 💸 加密货币交易所与币圈常用钱包服务
-    type: "http"
-    behavior: "classical"
+  crypto:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Crypto/Crypto.yaml"
     path: "./ruleset/crypto.yaml"
-    interval: 86400
 
-  microsoft: # Ⓜ️ 微软通用服务 (Windows 自动更新、Office 365 办公等)
-    type: "http"
-    behavior: "classical"
+  microsoft:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.yaml"
     path: "./ruleset/microsoft.yaml"
-    interval: 86400
 
-  Bing: # Ⓜ️ Bing 搜索
-    type: "http"
-    behavior: "classical"
+  Bing:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Bing/Bing.yaml"
     path: "./ruleset/Bing.yaml"
-    interval: 86400
 
-  apple: # 🍎 苹果基础云服务、App Store 下载与同步
-    type: "http"
-    behavior: "classical"
+  apple:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.yaml"
     path: "./ruleset/apple.yaml"
-    interval: 86400
 
-  apple-loyalsoldier: # 🍎 苹果辅助分流规则 (Loyalsoldier 优化版)
-    type: "http"
-    behavior: "domain"
+  apple-loyalsoldier:
+    <<: *domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt"
     path: "./ruleset/apple-loyalsoldier.yaml"
-    interval: 86400
 
-  icloud: # ☁️ 苹果 iCloud 云盘备份与数据云同步
-    type: "http"
-    behavior: "domain"
+  icloud:
+    <<: *domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt"
     path: "./ruleset/icloud.yaml"
-    interval: 86400
 
-  telegramcidr: # 📲 Telegram IP 物理网段分流
-    type: "http"
-    behavior: "ipcidr"
+  telegramcidr:
+    <<: *ip
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/telegramcidr.txt"
     path: "./ruleset/telegramcidr.yaml"
-    interval: 86400
 
-  telegram: # 📲 Telegram 聊天、电报文件接收与媒体传输
-    type: "http"
-    behavior: "classical"
+  telegram:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
     path: "./ruleset/telegram.yaml"
-    interval: 86400
 
-  discord: # 📱 Discord 社区、群组交流与游戏语音通话
-    type: "http"
-    behavior: "classical"
+  discord:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Discord/Discord.yaml"
     path: "./ruleset/discord.yaml"
-    interval: 86400
 
-  twitter: # 🖥️ Twitter / X 社交媒体平台
-    type: "http"
-    behavior: "classical"
+  twitter:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.yaml"
     path: "./ruleset/twitter.yaml"
-    interval: 86400
 
-  facebook: # 👤 Facebook 社交媒体平台
-    type: "http"
-    behavior: "classical"
+  facebook:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Facebook/Facebook.yaml"
     path: "./ruleset/facebook.yaml"
-    interval: 86400
 
-  reddit: # 📖 Reddit 境外主流社区论坛
-    type: "http"
-    behavior: "classical"
+  reddit:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Reddit/Reddit.yaml"
     path: "./ruleset/reddit.yaml"
-    interval: 86400
 
-  youtube: # 📺 YouTube 视频播放与直播加载
-    type: "http"
-    behavior: "classical"
+  youtube:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml"
     path: "./ruleset/youtube.yaml"
-    interval: 86400
 
-  netflix: # 🎥 Netflix 奈飞流媒体高清视频
-    type: "http"
-    behavior: "classical"
+  netflix:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.yaml"
     path: "./ruleset/netflix.yaml"
-    interval: 86400
 
-  tiktok: # 📹 TikTok 国际版抖音短视频
-    type: "http"
-    behavior: "classical"
+  tiktok:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml"
     path: "./ruleset/tiktok.yaml"
-    interval: 86400
 
-  bahamut: # 📺 台湾巴哈姆特动画疯多媒体流媒体
-    type: "http"
-    behavior: "classical"
+  bahamut:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Bahamut/Bahamut.yaml"
     path: "./ruleset/bahamut.yaml"
-    interval: 86400
 
-  netease: # 🥬 网易云音乐解锁与直连加速
-    type: "http"
-    behavior: "classical"
+  netease:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/NetEase/NetEase.yaml"
     path: "./ruleset/netease.yaml"
-    interval: 86400
 
-  spotify: # 🥬 Spotify 音乐流媒体播放
-    type: "http"
-    behavior: "classical"
+  spotify:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Spotify/Spotify.yaml"
     path: "./ruleset/spotify.yaml"
-    interval: 86400
 
-  chinamedia: # 📺 哔哩哔哩、爱奇艺等国内主流多媒体分流直连
-    type: "http"
-    behavior: "classical"
+  chinamedia:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMedia/ChinaMedia.yaml"
     path: "./ruleset/chinamedia.yaml"
-    interval: 86400
 
-  asianmedia: # 📺 亚洲其他地区的主流多媒体流媒体
-    type: "http"
-    behavior: "classical"
+  asianmedia:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AsianMedia/AsianMedia.yaml"
     path: "./ruleset/asianmedia.yaml"
-    interval: 86400
 
-  steamcn: # 🎮 Steam 游戏商店、社区国内直连与下载加速
-    type: "http"
-    behavior: "classical"
+  steamcn:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml"
     path: "./ruleset/steamcn.yaml"
-    interval: 86400
 
-  playstation: # 🎮 PlayStation 主机游戏商店、更新直连与网络联机
-    type: "http"
-    behavior: "classical"
+  playstation:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PlayStation/PlayStation.yaml"
     path: "./ruleset/playstation.yaml"
-    interval: 86400
 
-  download: # ⬇️ 国内常规网页文件大流量下载与网盘
-    type: "http"
-    behavior: "classical"
+  download:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Download/Download.yaml"
     path: "./ruleset/download.yaml"
-    interval: 86400
 
-  gamedownload: # 🎮 各大平台大型游戏安装包与更新数据直连下载
-    type: "http"
-    behavior: "classical"
+  gamedownload:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/GameDownload/GameDownload.yaml"
     path: "./ruleset/gamedownload.yaml"
-    interval: 86400
 
-  cloudcn: # ☁️ 百度网盘、阿里云盘等国内主流云存储服务直连
-    type: "http"
-    behavior: "classical"
+  cloudcn:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudCN/CloudCN.yaml"
     path: "./ruleset/cloudcn.yaml"
-    interval: 86400
 
-  google: # ❇️ 谷歌通用基础服务、谷歌搜索等分流
-    type: "http"
-    behavior: "classical"
+  google:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml"
     path: "./ruleset/google.yaml"
-    interval: 86400
 
-  googlefcm: # 📲 谷歌 FCM 移动端系统级消息推送通道
-    type: "http"
-    behavior: "classical"
+  googlefcm:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GoogleFCM/GoogleFCM.yaml"
     path: "./ruleset/googlefcm.yaml"
-    interval: 86400
 
-  googleearth: # 🗺️ 谷歌地球与谷歌地图服务
-    type: "http"
-    behavior: "classical"
+  googleearth:
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GoogleEarth/GoogleEarth.yaml"
     path: "./ruleset/googleearth.yaml"
-    interval: 86400
 
-  # 👉【新增】：Blackmatrix7 官方 Mail 经典邮件规则集
   mail_cn:
-    type: "http"
-    behavior: "classical"
+    <<: *classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Mail/Mail.yaml"
     path: "./ruleset/mail.yaml"
-    interval: 86400
 
-  direct: # 🏠 本地内网白名单与已知国内常用直连域名集
-    type: "http"
-    behavior: "domain"
+  direct:
+    <<: *domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt"
     path: "./ruleset/direct.yaml"
-    interval: 86400
 
-  cncidr: # 🏠 国内运营商物理 IP 范围直连兜底 (防止漏网)
-    type: "http"
-    behavior: "ipcidr"
+  cncidr:
+    <<: *ip
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt"
     path: "./ruleset/cncidr.yaml"
-    interval: 86400
 
-  proxy: # ✈️ 境外主流、已知被墙需要代理访问的域名集
-    type: "http"
-    behavior: "domain"
+  proxy:
+    <<: *domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt"
     path: "./ruleset/proxy.yaml"
-    interval: 86400
 
-  gfw: # 🚫 匹配 GFW 防火墙黑名单拦截分流
-    type: "http"
-    behavior: "domain"
+  gfw:
+    <<: *domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt"
     path: "./ruleset/gfw.yaml"
-    interval: 86400
 
-  tld-not-cn: # ✈️ 所有非 .cn 结尾的境外顶级域名代理兜底
-    type: "http"
-    behavior: "domain"
+  tld-not-cn:
+    <<: *domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/tld-not-cn.txt"
     path: "./ruleset/tld-not-cn.yaml"
-    interval: 86400
 
 # >>>>>>>>>>>>>> 规则策略 (规则字段严格用双引号) <<<<<<<<<<<<<<
 rules:
