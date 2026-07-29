@@ -482,233 +482,229 @@ proxy-groups:
     tolerance: 50
     timeout: 3000
 
-# >>>>>>>>>>>>>> 规则集定义 (路径增加双引号，添加锚点模板) <<<<<<<<<<<<<<
+# >>>>>>>>>>>>>> 规则集定义 (重新设计正确的锚点格式) <<<<<<<<<<<<<<
 rule-providers:
-  # IP-CIDR 规则模板 (二进制格式)
-  ip: &ip { type: http, interval: 86400, behavior: ipcidr, format: mrs }
-  # Domain 规则模板 (二进制格式)
-  domain: &domain { type: http, interval: 86400, behavior: domain, format: mrs }
-  # Classical 规则模板 (文本格式)
-  classical:
-    &classical {
-      type: http,
-      interval: 86400,
-      behavior: classical,
-      format: text,
-    }
+  # 锚点 1：专门解析 Loyalsoldier 的 .txt 纯文本域名规则集 (用 text 格式解析)
+  txt-domain: &txt-domain { type: http, interval: 86400, behavior: domain, format: text }
+
+  # 锚点 2：专门解析 Loyalsoldier 的 .txt 纯文本 IP段规则集 (用 text 格式解析)
+  txt-ip: &txt-ip { type: http, interval: 86400, behavior: ipcidr, format: text }
+
+  # 锚点 3：专门解析 Blackmatrix7 以及自建的 .yaml 混合规则集 (用 yaml 格式解析)
+  yaml-classical: &yaml-classical { type: http, interval: 86400, behavior: classical, format: yaml }
 
   reject:
-    <<: *domain
+    <<: *txt-domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
     path: "./ruleset/reject.yaml"
 
   emby:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Emby/Emby.yaml"
     path: "./ruleset/emby.yaml"
 
   private:
-    <<: *domain
+    <<: *txt-domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt"
     path: "./ruleset/private.yaml"
 
   github:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml"
     path: "./ruleset/github.yaml"
 
   openai:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
     path: "./ruleset/openai.yaml"
 
   gemini:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml"
     path: "./ruleset/gemini.yaml"
 
   claude:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.yaml"
     path: "./ruleset/claude.yaml"
 
   copilot:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.yaml"
     path: "./ruleset/copilot.yaml"
 
   grok:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/TeigenW/clash-rules/refs/heads/main/grok.yaml"
     path: "./ruleset/grok.yaml"
 
   crypto:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Crypto/Crypto.yaml"
     path: "./ruleset/crypto.yaml"
 
   microsoft:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.yaml"
     path: "./ruleset/microsoft.yaml"
 
   Bing:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Bing/Bing.yaml"
     path: "./ruleset/Bing.yaml"
 
   apple:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.yaml"
     path: "./ruleset/apple.yaml"
 
   apple-loyalsoldier:
-    <<: *domain
+    <<: *txt-domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt"
     path: "./ruleset/apple-loyalsoldier.yaml"
 
   icloud:
-    <<: *domain
+    <<: *txt-domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt"
     path: "./ruleset/icloud.yaml"
 
   telegramcidr:
-    <<: *ip
+    <<: *txt-ip
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/telegramcidr.txt"
     path: "./ruleset/telegramcidr.yaml"
 
   telegram:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
     path: "./ruleset/telegram.yaml"
 
   discord:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Discord/Discord.yaml"
     path: "./ruleset/discord.yaml"
 
   twitter:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.yaml"
     path: "./ruleset/twitter.yaml"
 
   facebook:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Facebook/Facebook.yaml"
     path: "./ruleset/facebook.yaml"
 
   reddit:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Reddit/Reddit.yaml"
     path: "./ruleset/reddit.yaml"
 
   youtube:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml"
     path: "./ruleset/youtube.yaml"
 
   netflix:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.yaml"
     path: "./ruleset/netflix.yaml"
 
   tiktok:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml"
     path: "./ruleset/tiktok.yaml"
 
   bahamut:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Bahamut/Bahamut.yaml"
     path: "./ruleset/bahamut.yaml"
 
   netease:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/NetEase/NetEase.yaml"
     path: "./ruleset/netease.yaml"
 
   spotify:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Spotify/Spotify.yaml"
     path: "./ruleset/spotify.yaml"
 
   chinamedia:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMedia/ChinaMedia.yaml"
     path: "./ruleset/chinamedia.yaml"
 
   asianmedia:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AsianMedia/AsianMedia.yaml"
     path: "./ruleset/asianmedia.yaml"
 
   steamcn:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml"
     path: "./ruleset/steamcn.yaml"
 
   playstation:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PlayStation/PlayStation.yaml"
     path: "./ruleset/playstation.yaml"
 
   download:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Download/Download.yaml"
     path: "./ruleset/download.yaml"
 
   gamedownload:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/GameDownload/GameDownload.yaml"
     path: "./ruleset/gamedownload.yaml"
 
   cloudcn:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudCN/CloudCN.yaml"
     path: "./ruleset/cloudcn.yaml"
 
   google:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml"
     path: "./ruleset/google.yaml"
 
   googlefcm:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GoogleFCM/GoogleFCM.yaml"
     path: "./ruleset/googlefcm.yaml"
 
   googleearth:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GoogleEarth/GoogleEarth.yaml"
     path: "./ruleset/googleearth.yaml"
 
   mail_cn:
-    <<: *classical
+    <<: *yaml-classical
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Mail/Mail.yaml"
     path: "./ruleset/mail.yaml"
 
   direct:
-    <<: *domain
+    <<: *txt-domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt"
     path: "./ruleset/direct.yaml"
 
   cncidr:
-    <<: *ip
+    <<: *txt-ip
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt"
     path: "./ruleset/cncidr.yaml"
 
   proxy:
-    <<: *domain
+    <<: *txt-domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt"
     path: "./ruleset/proxy.yaml"
 
   gfw:
-    <<: *domain
+    <<: *txt-domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt"
     path: "./ruleset/gfw.yaml"
 
   tld-not-cn:
-    <<: *domain
+    <<: *txt-domain
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/tld-not-cn.txt"
     path: "./ruleset/tld-not-cn.yaml"
 
